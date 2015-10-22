@@ -1,0 +1,27 @@
+h = gcf; %current figure handle
+axesObjs = get(h, 'Children');  %axes handles
+dataObjs = get(axesObjs, 'Children'); %handles to low-level graphics objects in axes
+objTypes = get(dataObjs, 'Type');  %type of low-level graphics object
+xdata = get(dataObjs, 'XData');  %data from low-level grahics objects
+ydata = get(dataObjs, 'YData');
+t = xdata{4};
+nasalP_g = ydata{4};
+figure
+plot(t,nasalP_g)
+%%
+%which subject??
+tt = t-10100;
+figure
+plot(tt(3280:4025),nasalP_g(3280:4025),'Markersize',7,'Linewidth',1.5,'Color','b','MarkerFaceColor','k')
+hold on
+% plot(tt(168:1540),nasalPincr(168:1540),'Markersize',7,'Linewidth',1,'Color','r','MarkerFaceColor','k')
+% legend('filtered','original');
+hline = refline(0,0);
+set(hline,'Color','k')
+hold off
+set(gca,'Fontsize',40,'Fontweight','Bold')
+ax = 'Time[s]';
+ay = 'Nasal airflow';
+set(xlabel(ax),'Fontsize',40,'Fontweight','Bold')
+set(ylabel(ay),'Fontsize',40,'Fontweight','Bold')
+FigHandle = figure('Position', [100, 100, 1080, 720]);
