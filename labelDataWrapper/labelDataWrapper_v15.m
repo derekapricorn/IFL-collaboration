@@ -1,14 +1,15 @@
 %this script generates the workspace of time and pressure data for
 %annotation
+% he has flow and sleep stages
 filedir = uigetdir;
 cd(filedir);
 filetoRead = uigetfile('*.txt'); %get the filename
 importfile(filetoRead); %function to import the file
 Fs = str2double(colheaders{2}(1:5));
 
-bias = input('Bias: ');
+bias = input('Bias: '); %baseline
 min_intv = input('Minimum duration of each inspiratory event: '); %default 1
-min_area = input('Minimum enclosed area: '); %default 300
+min_area = input('Minimum enclosed area: '); %default 300 to rule out outliers
 %resample to 40Hz 
 data_rs = resample(data,40*100,Fs*100);
 numSamples = size(data_rs,1);
@@ -18,7 +19,7 @@ nasalP = data_rs(:,2);
 %flip the nasalP signal 
 nasalP = nasalP * (-1)+bias; %correct the bias
 
-load('event_time.mat')
+load('event_time.mat') %contains nrem interval
 count = 1;
 for ii = 1:length(t_event)
     startTime = t_event(ii,1);
@@ -42,14 +43,14 @@ for ii = 1:length(t_event)
     i_start = find(dif == 1); %dif = 1 is transition from neg to pos
     i_end = find(dif == -1); % dif = -1 is transition from pos to neg
     %error checking
-
+    % initial zero crossing
     if i_start(1)>i_end(1)
         i_start = i_start(1:end-1);
         i_end = i_end(2:end);
     end
     %validation of zero-crossings
     [start_stamp, end_stamp] = event_capture(nasalP_g,i_start,i_end,40,min_intv,min_area);
-    t_start = time(startInd) + start_stamp/40;
+    t_start = time(startInd) + start_stamp/40; %start of each inspiration
     t_end = time(startInd) + end_stamp/40;
 
     %find individual breath for analysis in GUI
