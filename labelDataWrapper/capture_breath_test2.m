@@ -1,4 +1,10 @@
 function [t_cell,p_cell] = capture_breath_test2(t, p, ts, te, c)
+% t --> time of interest
+% p --> my signal
+% ts --> start times from previous steps
+% te --> end times from previous steps
+% c -->
+ capture_breath_test2(time(startInd:lastInd),nasalP_g, t_start, t_end, count);
 %capture each breath event, the onset of which is defined as the point of
 %maximum rate of change, within the threshold range for zero flow (20% of
 %peak amplitude). The ending is determined as the point with the same value

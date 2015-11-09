@@ -1,5 +1,6 @@
 function [startP, endP] = event_capture(y, i_start, i_end, Fs, interval, threshold)
 %Screen for the potential valid individual breath contour
+% check you are not exceeding threshold
 startP = [];
 endP = [];
 sum = 0;
